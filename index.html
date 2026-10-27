@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Traitor or Faithful: does it make a difference?</title>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: one calm reading column; eight numbered steps, each a worked task with instant feedback. Same visual system as the Lecture 6 companion. */
+:root {
+  --bg: #F4F7F5; --surface: #FFFFFF; --pale: #EAF1ED; --mint: #CFE3DA; --line: #D3DFD9;
+  --ink: #1E2A2E; --muted: #4F5E64; --slate: #3E6A77; --sage: #2F5D50; --stone: #8FA69C;
+  --good: #23704A; --good-bg: #E3F2E9; --bad: #A63D2B; --bad-bg: #F8E6E1;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step-1: 1.0625rem; --step-2: 1.25rem; --step-3: 1.6rem; --step-4: 2.2rem;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #131B1D; --surface: #1B2528; --pale: #1F2D2E; --mint: #28433D; --line: #2F3F42;
+  --ink: #E5EEEA; --muted: #A7B7B2; --slate: #8CBBC8; --sage: #82C5AA; --stone: #5C7A70;
+  --good: #73D19B; --good-bg: #1B3326; --bad: #F2917C; --bad-bg: #3A2320; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #131B1D; --surface: #1B2528; --pale: #1F2D2E; --mint: #28433D; --line: #2F3F42;
+  --ink: #E5EEEA; --muted: #A7B7B2; --slate: #8CBBC8; --sage: #82C5AA; --stone: #5C7A70;
+  --good: #73D19B; --good-bg: #1B3326; --bad: #F2917C; --bad-bg: #3A2320; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: var(--step-1); line-height: 1.55; }
+.wrap { max-width: 46rem; margin: 0 auto; padding-block: 1.5rem 4rem; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 2.25rem; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.2; margin: 0; }
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-2); }
+p { margin: 0; }
+.eyebrow { font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--slate); font-weight: 700; }
+.num { font-family: var(--font-num); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+a { color: var(--slate); }
+:focus-visible { outline: 3px solid var(--slate); outline-offset: 2px; border-radius: 6px; }
+
+/* Hero */
+.hero { display: grid; gap: 1rem; }
+.cite { font-size: .95rem; color: var(--muted); }
+.question { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem; display: grid; gap: .6rem; }
+.question .say { font-size: 1.15rem; }
+.blank { display: inline-block; min-width: 6.5rem; border-bottom: 3px solid var(--slate); text-align: center; font-weight: 700; color: var(--slate); transition: opacity .3s; }
+.conds { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; }
+.cond { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: .7rem .6rem; text-align: center; display: grid; gap: .15rem; }
+.cond b { font-size: 1rem; }
+.cond .n { font-size: .9rem; color: var(--muted); }
+.flow { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; font-size: .98rem; }
+.flow span { background: var(--pale); border-radius: 999px; padding: .3rem .8rem; }
+.flow i { font-style: normal; color: var(--muted); }
+
+/* Steps */
+.step { display: grid; gap: 1rem; }
+.step-head { display: flex; gap: .85rem; align-items: baseline; }
+.step-no { font-family: var(--font-num); font-weight: 600; color: var(--surface); background: var(--sage); border-radius: 999px; min-width: 2rem; height: 2rem; display: inline-grid; place-items: center; font-size: 1rem; flex: none; transform: translateY(-2px); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 1.1rem; display: grid; gap: 1rem; min-width: 0; }
+
+/* Questions */
+.q { display: grid; gap: .55rem; }
+.q + .q { border-top: 1px solid var(--line); padding-top: 1rem; }
+.q-text { font-weight: 700; }
+.opts { display: flex; flex-wrap: wrap; gap: .5rem; }
+.opt { font: inherit; font-size: 1rem; color: var(--ink); background: var(--pale); border: 2px solid transparent; border-radius: 10px; padding: .5rem .85rem; cursor: pointer; text-align: left; }
+.opt:hover { border-color: var(--line); }
+.opt[aria-pressed="true"].right { background: var(--good-bg); border-color: var(--good); }
+.opt[aria-pressed="true"].wrong { background: var(--bad-bg); border-color: var(--bad); }
+.fb { font-size: .98rem; padding: .55rem .8rem; border-radius: 10px; }
+.fb.right { background: var(--good-bg); }
+.fb.wrong { background: var(--bad-bg); }
+.fb strong { margin-right: .25rem; }
+.score { font-size: .95rem; color: var(--muted); }
+
+/* Tables */
+.tbl-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 1rem; }
+th, td { padding: .5rem .6rem; text-align: center; border-bottom: 1px solid var(--line); }
+th { font-size: .9rem; color: var(--muted); font-weight: 700; }
+th:first-child, td:first-child { text-align: left; }
+td.num { font-family: var(--font-num); }
+tr.total td { font-weight: 700; border-bottom: 0; }
+td.hi { background: var(--pale); font-weight: 700; }
+
+/* Charts */
+.chart { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--ink); font-family: var(--font-body); }
+.chart .axis { stroke: var(--muted); }
+.chart .tick { fill: var(--muted); font-size: 13px; }
+.legend { display: flex; flex-wrap: wrap; gap: 1rem; font-size: .95rem; }
+.key { display: inline-flex; align-items: center; gap: .4rem; }
+.sw { width: .9rem; height: .9rem; border-radius: 3px; display: inline-block; }
+.note { font-size: .9rem; color: var(--muted); border-left: 3px solid var(--mint); padding-left: .7rem; }
+.callout { background: var(--pale); border-radius: 12px; padding: .8rem 1rem; display: grid; gap: .35rem; }
+.reveal { background: var(--pale); border-radius: 12px; border: 2px solid transparent; }
+.reveal:hover { border-color: var(--line); }
+.reveal summary { cursor: pointer; font-weight: 700; padding: .7rem 1rem; list-style: none; display: flex; gap: .6rem; align-items: center; }
+.reveal summary::-webkit-details-marker { display: none; }
+.reveal summary::before { content: "+"; font-family: var(--font-num); font-weight: 600; color: var(--surface); background: var(--slate); border-radius: 999px; width: 1.4rem; height: 1.4rem; display: inline-grid; place-items: center; flex: none; }
+.reveal[open] summary::before { content: "−"; }
+.reveal-body { padding: 0 1rem .9rem; display: grid; gap: .35rem; }
+
+/* Inputs */
+.fill { display: grid; gap: .6rem; }
+.fill-row { display: grid; grid-template-columns: 1fr 7rem; gap: .6rem; align-items: center; }
+select, input[type="text"] { font: inherit; font-size: 1rem; color: var(--ink); background: var(--surface); border: 2px solid var(--line); border-radius: 8px; padding: .4rem .5rem; min-width: 0; width: 100%; }
+select.right, input.right { border-color: var(--good); background: var(--good-bg); }
+select.wrong, input.wrong { border-color: var(--bad); background: var(--bad-bg); }
+
+/* Simulators */
+.sim-grid { display: grid; gap: .9rem; }
+.slider { display: grid; grid-template-columns: 1fr auto; gap: .2rem .8rem; align-items: center; }
+.slider label { font-weight: 700; }
+.slider output { font-family: var(--font-num); font-weight: 600; }
+.slider input { grid-column: 1 / -1; width: 100%; accent-color: var(--sage); }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
+.stat { background: var(--pale); border-radius: 12px; padding: .55rem .6rem; text-align: center; }
+.stat .v { font-family: var(--font-num); font-weight: 600; font-size: 1.35rem; display: block; }
+.stat .k { font-size: .85rem; color: var(--muted); }
+.verdict { font-weight: 700; padding: .55rem .8rem; border-radius: 10px; }
+.verdict.sig { background: var(--good-bg); color: var(--good); }
+.verdict.ns { background: var(--bad-bg); color: var(--bad); }
+.verdict.warn { background: var(--pale); color: var(--ink); font-weight: 400; }
+.btns { display: flex; flex-wrap: wrap; gap: .5rem; }
+.btn { font: inherit; font-size: .98rem; font-weight: 700; color: var(--surface); background: var(--sage); border: 0; border-radius: 10px; padding: .55rem 1rem; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--sage); border: 2px solid var(--sage); }
+.challenges { display: grid; gap: .5rem; margin: 0; padding-left: 1.2rem; }
+.shuffled { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+.shuffled .stat .v { font-size: 1.15rem; }
+.tally { font-size: 1.05rem; }
+.tally b { font-family: var(--font-num); }
+
+/* Decode + APA */
+.result-big { font-family: var(--font-num); font-size: clamp(1.2rem, 4.6vw, 1.85rem); line-height: 1.6; }
+.result-big em { font-family: var(--font-body); font-style: italic; }
+.tok { border-bottom: 3px solid var(--slate); padding: 0 .1rem; }
+.decode { display: grid; gap: .7rem; }
+.decode-row { display: grid; grid-template-columns: 5.5rem 1fr; gap: .6rem; align-items: center; }
+.decode-row .label { font-family: var(--font-num); font-weight: 600; font-size: 1.15rem; }
+.apa { line-height: 2.4; font-size: 1.08rem; }
+.apa input { width: 5.2rem; display: inline-block; padding: .15rem .35rem; text-align: center; font-family: var(--font-num); }
+.model { background: var(--pale); border-radius: 12px; padding: .9rem 1rem; line-height: 1.8; }
+.hl-desc { background: color-mix(in srgb, var(--slate) 22%, transparent); border-radius: 4px; padding: 0 .15rem; }
+.hl-test { background: color-mix(in srgb, var(--sage) 24%, transparent); border-radius: 4px; padding: 0 .15rem; }
+.hl-es { background: color-mix(in srgb, var(--good) 22%, transparent); border-radius: 4px; padding: 0 .15rem; }
+.fb-list { display: grid; gap: .35rem; margin: 0; padding-left: 1.1rem; font-size: .98rem; }
+
+/* Critical reader */
+.flips { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .6rem; }
+.flip { font: inherit; text-align: left; color: var(--ink); background: var(--pale); border: 2px solid transparent; border-radius: 12px; padding: .8rem .9rem; cursor: pointer; display: grid; gap: .35rem; }
+.flip .tag { font-size: .8rem; letter-spacing: .07em; text-transform: uppercase; font-weight: 700; }
+.flip .tag.plus { color: var(--good); }
+.flip .tag.minus { color: var(--bad); }
+.flip .more { color: var(--muted); font-size: .95rem; }
+footer { font-size: .9rem; color: var(--muted); display: grid; gap: .4rem; }
+@media (max-width: 30rem) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .decode-row { grid-template-columns: 4.2rem 1fr; }
+  .conds { grid-template-columns: 1fr; }
+  .fill-row { grid-template-columns: 1fr 5.5rem; }
+}
+@media (prefers-reduced-motion: no-preference) { .fb, .model { animation: rise .25s ease-out; } @keyframes rise { from { transform: translateY(4px); opacity: .6; } to { transform: none; opacity: 1; } } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">RMIa · Lecture 5 · The Traitors example</p>
+  <h1>Traitor or Faithful: does it make a difference?</h1>
+  <p>Across several series, 100 contestants played the game. 20 were Traitors and 80 were Faithfuls. Was role linked to reaching the final, or could any difference just be luck?</p>
+  <div class="conds" style="grid-template-columns: repeat(2, minmax(0, 1fr))">
+    <div class="cond"><b>Traitors</b><span class="n num">n = 20</span></div>
+    <div class="cond"><b>Faithfuls</b><span class="n num">n = 80</span></div>
+  </div>
+  <div class="flow"><span>100 contestants</span><i>→</i><span>role chosen by the producers</span><i>→</i><span>play the game</span><i>→</i><span>reached the final: yes / no</span></div>
+</header>
+
+<section class="step" aria-labelledby="s1">
+  <div class="step-head"><span class="step-no">1</span><h2 id="s1">Work out the design</h2></div>
+  <div class="panel" id="design"></div>
+</section>
+
+<section class="step" aria-labelledby="s2">
+  <div class="step-head"><span class="step-no">2</span><h2 id="s2">Research question and hypotheses</h2></div>
+  <div class="panel" id="hyp"></div>
+</section>
+
+<section class="step" aria-labelledby="s3">
+  <div class="step-head"><span class="step-no">3</span><h2 id="s3">What did we find?</h2></div>
+  <div class="panel">
+    <div class="tbl-wrap">
+      <table aria-label="Observed counts: reached the final, by role">
+        <thead><tr><th scope="col">Observed</th><th scope="col">Reached final</th><th scope="col">Didn’t</th><th scope="col">Total</th><th scope="col">% reaching final</th></tr></thead>
+        <tbody>
+          <tr><td>Traitor</td><td class="num">9</td><td class="num">11</td><td class="num">20</td><td class="num hi">45%</td></tr>
+          <tr><td>Faithful</td><td class="num">16</td><td class="num">64</td><td class="num">80</td><td class="num hi">20%</td></tr>
+          <tr class="total"><td>Total</td><td class="num">25</td><td class="num">75</td><td class="num">100</td><td class="num">25%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <svg class="chart" id="obsbars" viewBox="0 0 640 220" role="img" aria-label="Bar chart of the percentage of each role who reached the final: Traitors 45 percent, Faithfuls 20 percent."></svg>
+    <div id="obsq"></div>
+  </div>
+</section>
+
+<section class="step" aria-labelledby="s4">
+  <div class="step-head"><span class="step-no">4</span><h2 id="s4">What would “no association” look like?</h2></div>
+  <div class="panel">
+    <p>If role made no difference (H0), Traitors and Faithfuls would reach the final at the same rate as everyone. Overall, <span class="num">25</span> of <span class="num">100</span> contestants reached the final. Work out each group’s <b>fair share</b>: the <b>expected counts</b>.</p>
+    <details class="reveal">
+      <summary>Why are 25% expected to reach the final?</summary>
+      <div class="reveal-body">
+      <p>It comes from our own data: 25 of the 100 contestants reached the final, so the overall rate is 25%. If role made no difference, knowing whether someone was a Traitor or a Faithful would tell you nothing about their chances. Every contestant would have the same chance as everyone else: the overall 25%.</p>
+      <p class="muted">So under H0, 25% of the Traitors and 25% of the Faithfuls should reach the final. The totals stay the same; only how the finalists are shared between the groups changes.</p>
+      </div>
+    </details>
+    <div class="fill">
+      <div class="fill-row"><label for="e-yes">Expected Traitor finalists (out of 20)</label><input type="text" id="e-yes" inputmode="decimal" placeholder="?"></div>
+      <div class="fill-row"><label for="e-no">Expected Faithful finalists (out of 80)</label><input type="text" id="e-no" inputmode="decimal" placeholder="?"></div>
+    </div>
+    <div class="btns"><button class="btn" id="e-check" type="button">Check</button><button class="btn ghost" id="e-hint" type="button">Hint</button></div>
+    <div id="e-fb" aria-live="polite"></div>
+    <div id="e-reveal" hidden>
+      <div class="legend"><span class="key"><span class="sw" style="background:var(--sage)"></span>Observed finalists</span><span class="key"><span class="sw" style="background:var(--stone)"></span>Expected finalists if H0 were true</span></div>
+      <svg class="chart" id="oebars" viewBox="0 0 640 220" role="img" aria-label="Observed versus expected finalists. Traitors: 9 observed, 5 expected. Faithfuls: 16 observed, 20 expected."></svg>
+      <div class="callout">
+        <p><b>χ² adds up how far each cell is from its fair share.</b> For each cell: (observed − expected)² ÷ expected. The biggest gap is the Traitor finalists: (9 − 5)² ÷ 5 = <span class="num">3.20</span>. All four cells together give <b class="num">χ² = 5.33</b>.</p>
+        <p class="muted">You will never calculate this by hand. You need the idea for two reasons: SPSS warns you when expected counts are too small (step 6), and it tells you what a big χ² means: our table is far from the “no association” table.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="step" aria-labelledby="s5">
+  <div class="step-head"><span class="step-no">5</span><h2 id="s5">Testing the null: build the “just luck” world</h2></div>
+  <div class="panel">
+    <p>A sceptic says: <b>“Role makes no difference. The Traitors just got lucky.”</b> That is H0. To test it, build a world where the sceptic is right: keep the 25 finalists, but hand out the 20 Traitor envelopes at random so role can’t matter. Then see how often luck alone gives a result as extreme as ours (9 Traitor finalists).</p>
+    <div class="btns">
+      <button class="btn" id="sh1" type="button">Shuffle once</button>
+      <button class="btn" id="sh100" type="button">Shuffle 100 times</button>
+      <button class="btn" id="sh1000" type="button">Shuffle 1,000 times</button>
+      <button class="btn ghost" id="shreset" type="button">Start again</button>
+    </div>
+    <div>
+      <p class="muted" style="margin-bottom:.4rem">Latest shuffle</p>
+      <div class="shuffled" aria-live="polite" style="grid-template-columns: repeat(2, minmax(0, 1fr))">
+        <div class="stat"><span class="v" id="sy0">–</span><span class="k">Traitor finalists (out of 20)</span></div>
+        <div class="stat"><span class="v" id="sy1">–</span><span class="k">Faithful finalists (out of 80)</span></div>
+      </div>
+    </div>
+    <p class="tally" id="tally" aria-live="polite">No shuffles yet. The real data had 9 Traitor finalists; luck would give about 5.</p>
+    <div class="legend"><span class="key"><span class="sw" style="background:var(--stone)"></span>Typical luck results</span><span class="key"><span class="sw" style="background:var(--sage)"></span>As extreme as ours, in either direction</span></div>
+    <svg class="chart" id="hist" viewBox="0 0 640 260" role="img" aria-label="Histogram of the number of Traitor finalists in shuffled data. Results of 9 or more, or 1 or fewer, are as extreme as the real data."></svg>
+    <div class="callout">
+      <p><b>Reading it.</b> Each shuffle is one “just luck” version of the game. Luck usually gives about 5 Traitor finalists. Our 9 is 4 above that; 1 would be just as far below, so both count as “at least as extreme”. The share of dark bars is the <b>p-value</b>.</p>
+      <p class="muted">After 1,000 shuffles you should land near 4%. Shuffling like this is exactly what <b>Fisher’s Exact Test</b> does (<span class="num">p = .040</span>). SPSS’s chi-square shortcut gives <span class="num">p = .021</span>. Both are below .05, but they differ because the smallest expected count is only 5, where the shortcut gets rough. That is why the expected-count rule exists (step 6).</p>
+    </div>
+    <div id="nullq"></div>
+  </div>
+</section>
+
+<section class="step" aria-labelledby="s6">
+  <div class="step-head"><span class="step-no">6</span><h2 id="s6">More series, fewer series</h2></div>
+  <div class="panel">
+    <p>Keep the same pattern (20% of contestants are Traitors; 45% of Traitors and 20% of Faithfuls reach the final) and change how many contestants we pool. One series has about 22 contestants.</p>
+    <div class="sim-grid">
+      <div class="slider"><label for="n">Contestants pooled</label><output id="n-o" for="n" class="num"></output><input type="range" id="n" min="20" max="400" step="1" value="100"></div>
+    </div>
+    <div class="stats" aria-live="polite">
+      <div class="stat"><span class="v" id="o-chi"></span><span class="k">χ² (df = 1)</span></div>
+      <div class="stat"><span class="v" id="o-p"></span><span class="k"><em>p</em></span></div>
+      <div class="stat"><span class="v" id="o-v"></span><span class="k">Cramér’s <em>V</em></span></div>
+      <div class="stat"><span class="v" id="o-e"></span><span class="k">Smallest expected count</span></div>
+    </div>
+    <div class="verdict" id="verdict" aria-live="polite"></div>
+    <div class="verdict warn" id="assume" aria-live="polite"></div>
+    <div class="btns"><button class="btn ghost" id="reset" type="button">Reset to our data</button></div>
+    <h3>Challenges</h3>
+    <ol class="challenges">
+      <li>What is the smallest number of contestants that still gives <em>p</em> &lt; .05? Does the expected-count rule pass there?</li>
+      <li>Set it to 22, one series. What does footnote a say, and what would you report instead of the chi-square?</li>
+      <li>Cramér’s <em>V</em> never moves. Why not? What does that tell you about the difference between <em>p</em> and effect size?</li>
+    </ol>
+    <p class="note">The explorer keeps the percentages fixed, so some counts are not whole numbers. Real data would wobble around these values.</p>
+  </div>
+</section>
+
+<section class="step" aria-labelledby="s7">
+  <div class="step-head"><span class="step-no">7</span><h2 id="s7">Decode and write up the result</h2></div>
+  <div class="panel">
+    <div class="result-big" aria-label="chi-square of 1, N equals 100, equals 5.33, p equals .021, V equals .23"><em>χ²</em>(<span class="tok">1</span>, <em>N</em> = <span class="tok">100</span>) = <span class="tok">5.33</span>, <em>p</em> = <span class="tok">.021</span>, <em>V</em> = <span class="tok">.23</span></div>
+    <p class="muted">Match each number to what it tells you.</p>
+    <div class="decode" id="decode"></div>
+    <div id="decode-fb" aria-live="polite"></div>
+    <h3>Build the APA write-up</h3>
+    <p>Fill in the blanks. Percentages as whole numbers; two decimals for χ² and <em>V</em>; APA rules for <em>p</em>.</p>
+    <p class="apa" id="apa">Traitors were more likely to reach the final (<input type="text" id="a1" inputmode="numeric" aria-label="Percent of Traitors reaching the final">%) than Faithfuls (<input type="text" id="a2" inputmode="numeric" aria-label="Percent of Faithfuls reaching the final">%), <em>χ²</em>(<input type="text" id="a3" inputmode="numeric" aria-label="Degrees of freedom">, <em>N</em> = <input type="text" id="a4" inputmode="numeric" aria-label="N">) = <input type="text" id="a5" inputmode="decimal" aria-label="Chi-square value">, <em>p</em> = <input type="text" id="a6" inputmode="decimal" aria-label="p value">, <em>V</em> = <input type="text" id="a7" inputmode="decimal" aria-label="Cramér's V">.</p>
+    <div class="btns"><button class="btn" id="check" type="button">Check my write-up</button><button class="btn ghost" id="show" type="button">Show the model answer</button></div>
+    <div id="apa-fb"></div>
+    <div class="model" id="model" hidden>
+      <p><span class="hl-desc">Traitors were more likely to reach the final (45%) than Faithfuls (20%)</span>, <span class="hl-test"><em>χ²</em>(1, <em>N</em> = 100) = 5.33, <em>p</em> = .021</span>, <span class="hl-es"><em>V</em> = .23</span>. Role was associated with reaching the final, with a small effect. Because the producers choose the Traitors, this shows an association, not that being a Traitor causes success.</p>
+      <div class="legend" style="margin-top:.6rem"><span class="key"><span class="sw hl-desc"></span>Direction + descriptives</span><span class="key"><span class="sw hl-test"></span>The test</span><span class="key"><span class="sw hl-es"></span>Effect size</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="step" aria-labelledby="s8">
+  <div class="step-head"><span class="step-no">8</span><h2 id="s8">Read it critically</h2></div>
+  <div class="panel">
+    <p>Tap each card. Which strength and which limitation would you mention in a reflection?</p>
+    <div class="flips" id="flips"></div>
+  </div>
+</section>
+
+<footer>
+  <p>Companion to RMIa Lecture 5 (Week 5): are these categories associated? The Traitors numbers are made up for teaching. Your answers stay on your device and are not collected.</p>
+</footer>
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const N = 100, NT = 20, NF = 80, FIN = 25, ET = 5, EF = 20, CHI_OBS = 16 / 3, Y_OBS = 9;
+  const LABS = ["Traitors", "Faithfuls"];
+
+  // ---------- MCQ blocks ----------
+  function mcq(container, items) {
+    const scoreEl = document.createElement("p"); scoreEl.className = "score";
+    const done = {};
+    items.forEach((it, qi) => {
+      const q = document.createElement("div"); q.className = "q";
+      q.innerHTML = `<p class="q-text" id="${it.id}-q">${it.q}</p>`;
+      const opts = document.createElement("div"); opts.className = "opts"; opts.setAttribute("role", "group"); opts.setAttribute("aria-labelledby", it.id + "-q");
+      const fb = document.createElement("div"); fb.setAttribute("aria-live", "polite");
+      it.options.forEach((o, oi) => {
+        const b = document.createElement("button"); b.type = "button"; b.className = "opt"; b.id = `${it.id}-${oi}`;
+        b.innerHTML = o.t; b.setAttribute("aria-pressed", "false");
+        b.addEventListener("click", () => {
+          opts.querySelectorAll(".opt").forEach((x) => { x.setAttribute("aria-pressed", "false"); x.classList.remove("right", "wrong"); });
+          b.setAttribute("aria-pressed", "true"); b.classList.add(o.ok ? "right" : "wrong");
+          fb.className = "fb " + (o.ok ? "right" : "wrong");
+          fb.innerHTML = `<strong>${o.ok ? "Yes." : "Not quite."}</strong>${o.fb}`;
+          done[qi] = o.ok; update();
+        });
+        opts.appendChild(b);
+      });
+      q.appendChild(opts); q.appendChild(fb); container.appendChild(q);
+    });
+    function update() { const n = Object.values(done).filter(Boolean).length; scoreEl.textContent = `${n} of ${items.length} correct`; }
+    if (items.length > 1) { update(); container.appendChild(scoreEl); }
+  }
+
+  mcq($("design"), [
+    { id: "iv", q: "Which variable is the grouping variable (the “IV”)?", options: [
+      { t: "Whether contestants reached the final", ok: false, fb: "That’s the outcome we’re counting, so it’s the DV." },
+      { t: "Role: Traitor or Faithful", ok: true, fb: "Contestants are grouped by role, and we compare the groups." },
+      { t: "Which series they were in", ok: false, fb: "Series is how the data were pooled, not what we’re comparing." } ] },
+    { id: "lv", q: "How many categories does each variable have?", options: [
+      { t: "2 and 2", ok: true, fb: "Traitor/Faithful and reached the final yes/no: a 2 × 2 table." },
+      { t: "2 and 100", ok: false, fb: "100 is the number of people, not categories." },
+      { t: "20 and 80", ok: false, fb: "Those are the group sizes." } ] },
+    { id: "dv", q: "What level of measurement is “reached the final”?", options: [
+      { t: "Nominal (yes/no)", ok: true, fb: "Two categories with no numerical meaning. We count how many fall in each." },
+      { t: "Scale", ok: false, fb: "You can’t average “yes” and “no”. It’s a category." } ] },
+    { id: "bw", q: "Is each contestant counted once, in one cell?", options: [
+      { t: "Yes, a between-subjects comparison", ok: true, fb: "Each contestant is either a Traitor or a Faithful, and either reached the final or didn’t. That’s what chi-square needs." },
+      { t: "No, everyone plays both roles", ok: false, fb: "Each contestant has one role in a series. (Someone who came back for a second series would break this rule.)" } ] },
+    { id: "ra", q: "The producers choose the Traitors. What can we claim if we find a difference?", options: [
+      { t: "Being a Traitor causes success", ok: false, fb: "Roles aren’t randomly assigned. If producers pick strong, strategic players as Traitors, those players might do well anyway." },
+      { t: "Role is associated with reaching the final", ok: true, fb: "Without random assignment we can only claim an association. Compare the phone study in Lecture 6, where random assignment allowed a causal claim." },
+      { t: "Nothing at all", ok: false, fb: "We can still say whether role and reaching the final go together. We just can’t say why." } ] },
+    { id: "test", q: "Which test do we use to answer the research question?", options: [
+      { t: "Chi-square test of association", ok: true, fb: "Two categorical variables, counts in a 2 × 2 table." },
+      { t: "Independent t-test", ok: false, fb: "A t-test needs a scale DV. Reaching the final is yes/no." },
+      { t: "One-way ANOVA", ok: false, fb: "ANOVA compares means across 3+ groups. There are no means here." } ] },
+  ]);
+
+  mcq($("hyp"), [
+    { id: "h0", q: "Which is H0, the null hypothesis?", options: [
+      { t: "There is no relationship between contestants’ role (Traitor or Faithful) and whether they reach the final.", ok: true, fb: "H0 is the sceptic’s claim: role makes no difference." },
+      { t: "Traitors are more likely to reach the final.", ok: false, fb: "That’s a directional prediction. Chi-square H1s are non-directional." },
+      { t: "Exactly 25% of each group will reach the final.", ok: false, fb: "Hypotheses are about populations. Samples almost never match exactly." } ] },
+    { id: "h1", q: "Which is H1?", options: [
+      { t: "There is a relationship between contestants’ role (Traitor or Faithful) and whether they reach the final.", ok: true, fb: "Non-directional, names both variables and the population." },
+      { t: "Being a Traitor causes contestants to reach the final.", ok: false, fb: "Causal wording. This is an associational question, and roles weren’t randomly assigned." } ] },
+    { id: "why", q: "Why do we test H0 rather than H1?", options: [
+      { t: "H0 makes one exact prediction we can compare against", ok: true, fb: "“No difference” tells us exactly what to expect: 25% of both groups reaching the final. “Some difference” could be any size, so there is no single picture to compare against." },
+      { t: "Because H0 is usually true", ok: false, fb: "H0 is just the starting assumption. We test it because it gives a clear prediction." },
+      { t: "Because we want to prove H0", ok: false, fb: "We never prove H0. At most we fail to reject it." } ] },
+  ]);
+
+  mcq($("obsq"), [
+    { id: "eye", q: "45% vs 20%. Can we conclude role makes a difference just by looking?", options: [
+      { t: "Yes, the gap is obvious", ok: false, fb: "Gaps like this can appear by chance, especially with only 20 Traitors. Steps 4 and 5 test whether this one is bigger than luck usually produces." },
+      { t: "No, we need to know whether a gap this size could be luck", ok: true, fb: "Description tells us the pattern in these 100 contestants. Inference asks whether it beats chance." } ] },
+  ]);
+
+  mcq($("nullq"), [
+    { id: "pmean", q: "p = .021. Which statement is correct?", options: [
+      { t: "There is a 2% chance that role makes no difference", ok: false, fb: "p is calculated assuming H0 is true, so it can’t be the chance that H0 is true." },
+      { t: "If role made no difference, a result this extreme would happen about 2% of the time", ok: true, fb: "That’s the logic of your shuffles. It’s rarer than 1 in 20, so we reject H0." },
+      { t: "There is a 98% chance Traitors really do better", ok: false, fb: "p doesn’t give the probability that a result is real. It tells you how surprising the data would be if H0 were true." } ] },
+  ]);
+
+  // ---------- Charts ----------
+  function bars(svgId, groups, series, ymax, unit) {
+    const svg = $(svgId), W = Math.max(300, Math.round(svg.parentElement.clientWidth - 36)), H = 220, L = 40, R = 10, T = 22, B = 36;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const sy = (v) => H - B - v / ymax * (H - T - B), gw = (W - L - R) / groups.length, bw = Math.min(80, gw * 0.6 / series.length);
+    let g = "";
+    const step = ymax <= 25 ? 5 : 10;
+    for (let v = 0; v <= ymax; v += step) g += `<line x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}" stroke="${css("--line")}"/><text class="tick" x="${L - 6}" y="${sy(v) + 4}" text-anchor="end">${v}${unit}</text>`;
+    groups.forEach((lab, i) => {
+      const cx = L + gw * i + gw / 2, x0 = cx - bw * series.length / 2;
+      series.forEach((s, j) => {
+        const v = s.vals[i], x = x0 + j * bw;
+        g += `<rect x="${x + 3}" y="${sy(v)}" width="${bw - 6}" height="${sy(0) - sy(v)}" rx="4" fill="${s.color}"/>`;
+        g += `<text x="${x + bw / 2}" y="${sy(v) - 6}" text-anchor="middle" font-size="14" font-weight="700">${s.fmt(v)}</text>`;
+      });
+      g += `<text x="${cx}" y="${H - 12}" text-anchor="middle" font-size="14">${lab}</text>`;
+    });
+    g += `<line class="axis" x1="${L}" x2="${W - R}" y1="${sy(0)}" y2="${sy(0)}" stroke-width="1.5"/>`;
+    svg.innerHTML = g;
+  }
+  function drawObs() { bars("obsbars", LABS, [{ vals: [45, 20], color: css("--sage"), fmt: (v) => v + "%" }], 50, "%"); }
+  function drawOE() { bars("oebars", LABS, [{ vals: [9, 16], color: css("--sage"), fmt: (v) => v }, { vals: [ET, EF], color: css("--stone"), fmt: (v) => v }], 25, ""); }
+
+  // ---------- Expected counts ----------
+  const near = (raw, target, tol) => { const x = parseFloat(String(raw).replace(",", ".")); return !isNaN(x) && Math.abs(x - target) <= tol; };
+  $("e-hint").addEventListener("click", () => { const f = $("e-fb"); f.className = "fb right"; f.innerHTML = "<strong>Hint.</strong>25 out of 100 contestants reached the final: 25%. What is 25% of 20 Traitors? And 25% of 80 Faithfuls? Or use the formula: row total × column total ÷ N."; });
+  $("e-check").addEventListener("click", () => {
+    const y = $("e-yes"), n = $("e-no"), f = $("e-fb");
+    const okY = near(y.value, ET, 0.01), okN = near(n.value, EF, 0.01);
+    [[y, okY], [n, okN]].forEach(([el, ok]) => { el.classList.remove("right", "wrong"); if (el.value.trim()) el.classList.add(ok ? "right" : "wrong"); });
+    if (okY && okN) { f.className = "fb right"; f.innerHTML = "<strong>Spot on.</strong>5 Traitor finalists and 20 Faithful finalists. We actually saw 9 and 16."; $("e-reveal").hidden = false; drawOE(); }
+    else if (near(y.value, 12.5, 0.01)) { f.className = "fb wrong"; f.innerHTML = "<strong>Not quite.</strong>12.5 splits the finalists equally between the groups. But there are four times as many Faithfuls, so use the overall rate: 25% of each group."; }
+    else { f.className = "fb wrong"; f.innerHTML = "<strong>Not quite.</strong>Use the overall rate of reaching the final (25 out of 100) for both groups. Try the hint."; }
+  });
+
+  // ---------- Shuffle simulator ----------
+  let sims = [];
+  const chiOf = (y) => (y - ET) ** 2 / 3; // (y-5)^2 * (1/5 + 1/15 + 1/20 + 1/60)
+  const extreme = (y) => Math.abs(y - ET) >= Math.abs(Y_OBS - ET);
+  function shuffleOnce() {
+    const a = Array.from({ length: N }, (_, i) => (i < FIN ? 1 : 0));
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    let y = 0; for (let i = 0; i < NT; i++) y += a[i];
+    return y;
+  }
+  function runShuffles(k) {
+    let last; for (let i = 0; i < k; i++) { last = shuffleOnce(); sims.push(last); }
+    $("sy0").textContent = last; $("sy1").textContent = FIN - last;
+    const hits = sims.filter(extreme).length, pct = 100 * hits / sims.length;
+    $("tally").innerHTML = `<b>${sims.length.toLocaleString()}</b> shuffle${sims.length === 1 ? "" : "s"} so far. Latest: <b>${last}</b> Traitor finalist${last === 1 ? "" : "s"} (χ² = <b>${chiOf(last).toFixed(2)}</b>). As extreme as ours: <b>${hits.toLocaleString()}</b> (<b>${pct < 10 ? pct.toFixed(1) : pct.toFixed(0)}%</b>).`;
+    drawHist();
+  }
+  function drawHist() {
+    const svg = $("hist"), W = Math.max(300, Math.round(svg.parentElement.clientWidth - 36)), H = 260, L = 44, R = 12, T = 26, B = 48, xmax = 14;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const bins = new Array(xmax + 1).fill(0); sims.forEach((y) => { bins[Math.min(xmax, y)]++; });
+    const maxc = Math.max(10, ...bins), bwid = (W - L - R) / (xmax + 1), sx = (i) => L + i * bwid, sy = (v) => H - B - v / maxc * (H - T - B);
+    const sage = css("--sage"), stone = css("--stone"), slate = css("--slate");
+    let g = `<line class="axis" x1="${L}" x2="${W - R}" y1="${sy(0)}" y2="${sy(0)}" stroke-width="1.5"/>`;
+    const ystep = maxc > 200 ? 100 : maxc > 50 ? 20 : maxc > 20 ? 5 : 2;
+    for (let v = 0; v <= maxc; v += ystep) g += `<line x1="${L}" x2="${W - R}" y1="${sy(v)}" y2="${sy(v)}" stroke="${css("--line")}"/><text class="tick" x="${L - 6}" y="${sy(v) + 4}" text-anchor="end">${v}</text>`;
+    bins.forEach((v, i) => {
+      if (v) g += `<rect x="${sx(i) + 2}" y="${sy(v)}" width="${bwid - 4}" height="${sy(0) - sy(v)}" fill="${extreme(i) ? sage : stone}"/>`;
+      g += `<text class="tick" x="${sx(i) + bwid / 2}" y="${sy(0) + 18}" text-anchor="middle">${i}${i === xmax ? "+" : ""}</text>`;
+    });
+    g += `<text x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle" font-size="14">Traitor finalists in each “just luck” shuffle</text>`;
+    const xo = sx(Y_OBS) + bwid / 2;
+    g += `<line x1="${xo}" x2="${xo}" y1="${T - 8}" y2="${sy(0)}" stroke="${slate}" stroke-width="4"/>`;
+    g += `<text x="${xo + 8}" y="${T + 6}" font-size="15" font-weight="700" fill="${slate}">Our data: 9</text>`;
+    if (!sims.length) g += `<text x="${(L + W - R) / 2}" y="${(T + sy(0)) / 2}" text-anchor="middle" font-size="15" fill="${css("--muted")}">Press a shuffle button to fill the chart</text>`;
+    svg.innerHTML = g;
+  }
+  $("sh1").addEventListener("click", () => runShuffles(1));
+  $("sh100").addEventListener("click", () => runShuffles(100));
+  $("sh1000").addEventListener("click", () => runShuffles(1000));
+  $("shreset").addEventListener("click", () => { sims = []; $("sy0").textContent = "–"; $("sy1").textContent = "–"; $("tally").textContent = "No shuffles yet. The real data had 9 Traitor finalists; luck would give about 5."; drawHist(); });
+
+  // ---------- Explorer ----------
+  // chi-square p for df = 1 via erfc
+  function erfc(x) { const z = Math.abs(x), t = 1 / (1 + 0.5 * z); const r = t * Math.exp(-z * z - 1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277))))))))); return x >= 0 ? r : 2 - r; }
+  const pChi1 = (c) => erfc(Math.sqrt(c / 2));
+  const fmtP = (p) => p < .001 ? "< .001" : p.toFixed(3).replace(/^0/, "");
+  function explorer() {
+    const n = +$("n").value, c = CHI_OBS * n / 100, p = pChi1(c), v = Math.sqrt(CHI_OBS / 100), e = n * 0.05;
+    $("n-o").textContent = n + (n <= 24 ? " (about one series)" : "");
+    $("o-chi").textContent = c.toFixed(2); $("o-p").textContent = fmtP(p); $("o-v").textContent = v.toFixed(2).replace(/^0/, ""); $("o-e").textContent = e.toFixed(2);
+    const vd = $("verdict"), sig = p < .05;
+    vd.className = "verdict " + (sig ? "sig" : "ns");
+    vd.textContent = sig ? `p ${fmtP(p).startsWith("<") ? "" : "= "}${fmtP(p)}: below .05, reject H0` : `p = ${fmtP(p)}: not below .05, fail to reject H0`;
+    const as = $("assume"), cells = [0.05, 0.15, 0.2, 0.6].map((f) => f * n), k = cells.filter((x) => x < 5 - 1e-9).length, pc = k * 25;
+    if (e < 1) as.innerHTML = `<b>Footnote a fails both parts:</b> ${k} of 4 cells (${pc}%) have expected counts below 5, and the smallest (${e.toFixed(2)}) is below 1. Don’t trust the chi-square p. This is a 2 × 2 table, so report Fisher’s Exact Test instead.`;
+    else if (k) as.innerHTML = `<b>Footnote a fails:</b> ${k} of 4 cells (${pc}%) ${k === 1 ? "has an expected count" : "have expected counts"} below 5 (smallest ${e.toFixed(2)}). More than 20%, so don’t trust the chi-square p. This is a 2 × 2 table, so report Fisher’s Exact Test instead.`;
+    else as.innerHTML = `<b>Footnote a passes:</b> 0 cells have expected counts below 5 (smallest ${e.toFixed(2)}).`;
+  }
+  $("n").addEventListener("input", explorer);
+  $("reset").addEventListener("click", () => { $("n").value = 100; explorer(); });
+
+  // ---------- Decode ----------
+  const meanings = ["Choose…", "Degrees of freedom: (rows − 1) × (columns − 1)", "Number of contestants in the analysis", "How far the table is from the “no association” table", "How often luck alone would give a result this extreme", "How strong the association is (0 to 1)"];
+  const decodeItems = [["1", 1], ["100", 2], ["5.33", 3], [".021", 4], [".23", 5]];
+  const dc = $("decode"), dfb = $("decode-fb");
+  decodeItems.forEach(([lab, ans], i) => {
+    const row = document.createElement("div"); row.className = "decode-row";
+    row.innerHTML = `<span class="label">${lab}</span>`;
+    const sel = document.createElement("select"); sel.id = "dec" + i; sel.setAttribute("aria-label", "Meaning of " + lab);
+    meanings.forEach((m, mi) => { const o = document.createElement("option"); o.value = mi; o.textContent = m; sel.appendChild(o); });
+    sel.addEventListener("change", () => {
+      sel.classList.remove("right", "wrong");
+      if (+sel.value) sel.classList.add(+sel.value === ans ? "right" : "wrong");
+      const allRight = decodeItems.every(([, a], j) => +$("dec" + j).value === a);
+      dfb.className = allRight ? "fb right" : ""; dfb.innerHTML = allRight ? "<strong>All matched.</strong>A 2 × 2 table gives df = (2 − 1) × (2 − 1) = 1. A χ² of 5.33 happens about 2% of the time by luck alone, so p &lt; .05 and we reject H0. For a 2 × 2 table, V = .23 is a small effect (benchmarks .10 / .30 / .50)." : "";
+    });
+    row.appendChild(sel); dc.appendChild(row);
+  });
+
+  // ---------- APA builder ----------
+  const ans = [
+    { id: "a1", v: ["45"], lab: "Traitors %" }, { id: "a2", v: ["20"], lab: "Faithfuls %" },
+    { id: "a3", v: ["1"], lab: "df" }, { id: "a4", v: ["100"], lab: "N" }, { id: "a5", v: ["5.33"], lab: "χ²" }, { id: "a6", v: [".021"], lab: "p" }, { id: "a7", v: [".23"], lab: "V" } ];
+  $("check").addEventListener("click", () => {
+    const notes = [];
+    ans.forEach((a) => {
+      const el = $(a.id), raw = el.value.trim().replace("%", ""); el.classList.remove("right", "wrong");
+      if (!raw) { notes.push(`${a.lab}: still blank.`); el.classList.add("wrong"); return; }
+      const ok = a.v.includes(raw);
+      if (a.id === "a6" && (raw === "0.021" || raw === "0.02")) notes.push("p: APA drops the zero before the decimal point, because p can never be above 1.");
+      else if (a.id === "a6" && raw === ".02") notes.push("p: give three decimals when you have them: .021.");
+      else if (a.id === "a7" && raw === "0.23") notes.push("V: drop the leading zero too. Like p, V can’t be bigger than 1.");
+      else if (a.id === "a3" && raw === "99") notes.push("df: for chi-square, df comes from the table size, not N − 1.");
+      else if (a.id === "a3" && raw === "4") notes.push("df: that counts cells. For chi-square, df = (rows − 1) × (columns − 1) = 1 × 1.");
+      else if (a.id === "a5" && raw === "5.333") notes.push("χ²: two decimal places is enough in a write-up.");
+      else if (a.id === "a6" && raw === ".05") notes.push("p: give the exact value from the output, not the cut-off.");
+      else if (!ok) notes.push(`${a.lab}: not quite. Look back at steps 3 and 7.`);
+      el.classList.add(ok ? "right" : "wrong");
+    });
+    const fb = $("apa-fb");
+    if (!notes.length) { fb.className = "fb right"; fb.innerHTML = "<strong>Spot on.</strong>That’s a complete APA result: direction, descriptives, test and effect size."; $("model").hidden = false; }
+    else { fb.className = "fb wrong"; fb.innerHTML = `<strong>Nearly there.</strong><ul class="fb-list">${notes.map((n) => `<li>${n}</li>`).join("")}</ul>`; }
+  });
+  $("show").addEventListener("click", () => { $("model").hidden = false; });
+
+  // ---------- Critical reader ----------
+  const flips = [
+    ["plus", "A clear yes/no outcome", "Reaching the final is unambiguous, so there’s no judgement involved in coding it."],
+    ["plus", "Pooled across series", "One series has only about 4 Traitors. Pooling gives enough people for the expected-count rule to pass (just)."],
+    ["minus", "Roles aren’t random", "Producers choose the Traitors. If they pick strong players, those players might do well whatever their role. Association, not cause."],
+    ["minus", "Are contestants independent?", "Within a series, players’ fates are linked: one banishment changes everyone else’s chances. Chi-square assumes each person’s outcome is independent."],
+    ["minus", "Repeat contestants", "Anyone who appeared in more than one series would be counted twice, which breaks the “one person, one cell” rule."],
+    ["minus", "Only just passes", "The smallest expected count is exactly 5. Fisher’s Exact gives p = .040 rather than .021. Same decision, but less comfortable."],
+  ];
+  const fl = $("flips");
+  flips.forEach(([kind, head, more], i) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "flip"; b.id = "flip" + i; b.setAttribute("aria-expanded", "false");
+    b.innerHTML = `<span class="tag ${kind}">${kind === "plus" ? "Strength" : "Limitation"}</span><b>${head}</b><span class="more" hidden>${more}</span>`;
+    b.addEventListener("click", () => { const m = b.querySelector(".more"); m.hidden = !m.hidden; b.setAttribute("aria-expanded", String(!m.hidden)); });
+    fl.appendChild(b);
+  });
+
+  function drawAll() { drawObs(); if (!$("e-reveal").hidden) drawOE(); drawHist(); explorer(); }
+  drawAll();
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawAll);
+  let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(drawAll, 150); });
+  new MutationObserver(drawAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>
+</body>
+</html>
